@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "407470322523",
+    "project_id": "chatchat-16751",
+    "storage_bucket": "chatchat-16751.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407470322523:android:98c2817fba7f580aafa07e",
+        "android_client_info": {
+          "package_name": "com.theRoss.chatchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApdrDjGFRHsqRT2VVPlMXw2_Qe4Gc7WVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

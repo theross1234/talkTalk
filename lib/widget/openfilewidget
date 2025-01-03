@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
+import 'package:http/http.dart' as http;
+
+class FirestoreFileWidget extends StatefulWidget {
+  final String fileUrl;
+  final String fileName;
+
+  const FirestoreFileWidget({
+    super.key,
+    required this.fileUrl,
+    this.fileName = "Document",
+  });
+
+  @override
+  State<FirestoreFileWidget> createState() => _FirestoreFileWidgetState();
+}
+
+class _FirestoreFileWidgetState extends State<FirestoreFileWidget> {
+
+  Future<void> _openFile() async {
+    try {
+      final result = await OpenFile.open(widget.fileUrl);
+      debugPrint("File opened: ${result.message}");
+    } catch (e) {
+      debugPrint("Error opening file: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to open file")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        children: [
+          const Icon(Icons.insert_drive_file, size: 40, color: Colors.blue),
+          const SizedBox(width: 10),
+          Expanded(
+                child: Text(
+                  widget.fileName,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_forward_ios), 
+            iconSize: 16, 
+            color: Colors.grey,
+            onPressed: () {
+              _openFile();
+            }
+            ),
+        ],
+      );
+  }
+}
