@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # chatchat
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# talkTalk
+what's app clone using flutter and firebase 
+>>>>>>> 78dbd6019561e3ae99d339050c7de1634bf860af
