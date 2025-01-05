@@ -1,17 +1,12 @@
-import 'dart:io';
-
+import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/audioPlayerWidget.dart';
 import 'package:chatchat/widget/openfilewidget';
 import 'package:chatchat/widget/videoPlayerWidget_another.dart';
-import 'package:chatchat/widget/video_player_widget.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 
-class DisplayMessageType extends StatelessWidget {
+class DisplayMessageType extends StatefulWidget {
   final String message;
 
   final Color color;
@@ -21,85 +16,89 @@ class DisplayMessageType extends StatelessWidget {
   final TextOverflow? overFlow;
 
   final MessageEnum type;
+  final bool isReply;
 
   const DisplayMessageType({
     super.key,
     required this.message,
+    required this.isReply,
     required this.type,
     required this.color,
     this.maxLines,
     this.overFlow,
   });
 
-  // Future openFile({
-  //   required String url,
-  //   String? fileName,
-  // }) async {
-  //   final file = await downloadFile(url: url, name: fileName);
-  //   if (file == null) return;
+  @override
+  State<DisplayMessageType> createState() => _DisplayMessageTypeState();
+}
 
-  //   print('path: ${file.path}');
-  //   OpenFile.open(file.path);
-  // }
+class _DisplayMessageTypeState extends State<DisplayMessageType> {
+  late CustomVideoPlayerController _customVideoPlayerController;
 
-  // // DOwnload file into private folder not visible to user
-  // Future<File?> downloadFile({
-  //   required String url,
-  //   String? name,
-  // }) async {
-  //   final appStorage = await getApplicationDocumentsDirectory();
-  //   final file = File('${appStorage.path}/$name');
+  late CachedVideoPlayerController _videoPlayerController;
 
-  //   try {
-  //     final response = await Dio().get(
-  //       url,
-  //       options: Options(
-  //         responseType: ResponseType.bytes,
-  //         followRedirects: false,
-  //         receiveTimeout: const Duration(seconds: 0),
-  //       ),
-  //     );
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the video controller
+    _videoPlayerController = CachedVideoPlayerController.network(widget.message)
+      ..initialize().then((_) {
+        setState(() {}); // Refresh UI after initialization
+      });
 
-  //     final raf = file.openSync(mode: FileMode.write);
-  //     raf.writeFromSync(response.data);
-  //     await raf.close();
+    // Configure the custom video player controller
+    _customVideoPlayerController = CustomVideoPlayerController(
+      context: context,
+      videoPlayerController: _videoPlayerController,
+      customVideoPlayerSettings: const CustomVideoPlayerSettings(
+          // enterFullscreenOnStart: false,
+          // exitFullscreenOnEnd: true,
+          showFullscreenButton: false),
+    );
+  }
 
-  //     return file;
-  //   } catch (e) {
-  //     print(e);
-  //     return null;
-  //   }
-  // }
+  @override
+  void dispose() {
+    _customVideoPlayerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     Widget messageToShow() {
-      switch (type) {
+      switch (widget.type) {
         case MessageEnum.text:
           return Text(
-            message,
-            style: TextStyle(color: color, fontSize: 16.0),
-            maxLines: maxLines,
-            overflow: overFlow,
+            widget.message,
+            style: TextStyle(color: widget.color, fontSize: 16.0),
+            maxLines: widget.maxLines,
+            overflow: widget.overFlow,
           );
         case MessageEnum.image:
           return CachedNetworkImage(
-            imageUrl: message,
+            imageUrl: widget.message,
             fit: BoxFit.cover,
           );
         case MessageEnum.audio:
           return AudioPlayerWidget(
-            audioUrl: message,
-            colors: color,
+            audioUrl: widget.message,
+            colors: widget.color,
           );
         case MessageEnum.video:
           // return VideoPlayerWidget(
-          //   videoUrl: message,
-          //   colors: color,
+          //   videoUrl: widget.message,
+          //   colors: widget.color,
           // );
+          print(
+              "/././././../././././ there is the video link ${widget.message}");
           return VideoPlayerWidgetAnother(
-            dataSource: message,
+            dataSource: widget.message,
           );
+        // return AspectRatio(
+        //   aspectRatio: _videoPlayerController.value.aspectRatio,
+        //   child: CustomVideoPlayer(
+        //       customVideoPlayerController: _customVideoPlayerController),
+        // );
         case MessageEnum.document:
           // return Text(
           //   message,
@@ -107,13 +106,13 @@ class DisplayMessageType extends StatelessWidget {
           //   maxLines: maxLines,
           //   overflow: overFlow,
           // );
-          return FirestoreFileWidget(fileUrl: message, fileName: "file");
+          return FirestoreFileWidget(fileUrl: widget.message, fileName: "file");
         default:
           return Text(
-            message,
+            widget.message,
             style: const TextStyle(color: Colors.white, fontSize: 16.0),
-            maxLines: maxLines,
-            overflow: overFlow,
+            maxLines: widget.maxLines,
+            overflow: widget.overFlow,
           );
       }
     }

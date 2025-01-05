@@ -26,6 +26,10 @@ class _VideoPlayerWidgetAnotherState extends State<VideoPlayerWidgetAnother> {
         CachedVideoPlayerController.network(widget.dataSource)
           ..initialize().then((_) {
             setState(() {}); // Refresh UI after initialization
+          }).catchError((e) {
+            print("/./././././././././././././././././././././././");
+            print("Error initializing video: $e");
+            print("/././././././././././././././././././././././");
           });
 
     // Configure the custom video player controller
@@ -41,13 +45,20 @@ class _VideoPlayerWidgetAnotherState extends State<VideoPlayerWidgetAnother> {
 
   @override
   void dispose() {
+    _videoPlayerController.dispose();
     _customVideoPlayerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomVideoPlayer(
-        customVideoPlayerController: _customVideoPlayerController);
+    if (_videoPlayerController.value.isInitialized) {
+      return CustomVideoPlayer(
+          customVideoPlayerController: _customVideoPlayerController);
+    } else if (_videoPlayerController.value.hasError) {
+      return const Center(child: Text("Error loading video"));
+    } else {
+      return const Center(child: CircularProgressIndicator());
+    }
   }
 }

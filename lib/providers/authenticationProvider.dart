@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/utils/constant.dart';
+import 'package:chatchat/utils/global_method.dart';
 import 'package:chatchat/widget/frienList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   bool _isLoggedIn = false;
@@ -34,7 +36,7 @@ class AuthenticationProvider extends ChangeNotifier {
     await Future.delayed(const Duration(seconds: 2));
     if (_auth.currentUser != null) {
       _uid = _auth.currentUser!.uid;
-
+      print("user is signed in $_uid");
       // get user data From firestore
       await getUserDataFromFirestore();
 
@@ -96,7 +98,6 @@ class AuthenticationProvider extends ChangeNotifier {
       print('enter User data fetching.');
       DocumentSnapshot documentSnapshot =
           await _firestore.collection(Constant.users).doc(_uid).get();
-
       print('Document exists: ${documentSnapshot.exists}');
       if (documentSnapshot.exists && documentSnapshot.data() != null) {
         _userModel =
@@ -196,12 +197,12 @@ class AuthenticationProvider extends ChangeNotifier {
         //showSnackBar(context, 'OTP code sent!');
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'Code auto-retrieval timed out. Please request a new code.'),
-          ),
-        );
+        //selectedFile();
+        showCustomSnackBar(
+            context: context,
+            title: "warning",
+            message: Constant.codeAutoRetrivalTimeOut,
+            contentType: ContentType.warning);
         //showSnackBar(context, 'Code auto-retrieval timed out. Please request a new code.');
       },
     );

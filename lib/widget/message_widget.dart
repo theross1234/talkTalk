@@ -88,6 +88,7 @@ class MessageWidget extends StatelessWidget {
                                                 ),
                                               ),
                                               DisplayMessageType(
+                                                  isReply: false,
                                                   maxLines: 1,
                                                   overFlow:
                                                       TextOverflow.ellipsis,
@@ -101,6 +102,7 @@ class MessageWidget extends StatelessWidget {
                                         )))
                                 : const SizedBox.shrink(),
                             DisplayMessageType(
+                                isReply: false,
                                 maxLines: 1,
                                 overFlow: TextOverflow.ellipsis,
                                 message: messageModel.message,

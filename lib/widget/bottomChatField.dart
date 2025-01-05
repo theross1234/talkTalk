@@ -331,7 +331,12 @@ class _BottomChatFieldState extends State<BottomChatField>
                             leading: const Icon(Icons.file_copy),
                             title: const Text(Constant.document),
                             onTap: () {
-                              selectedFile();
+                              //selectedFile();
+                              showCustomSnackBar(
+                                  context: context,
+                                  title: Constant.maintain,
+                                  message: Constant.maintainMessage,
+                                  contentType: ContentType.warning);
                               _hideCustomModal();
                             },
                           ),

@@ -13,16 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:open_file/open_file.dart';
 
-// //show snackbar method
-// void showSnackBar(BuildContext context, String message) {
-//   ScaffoldMessenger.of(context).showSnackBar(
-//     SnackBar(
-//       content: Text(message),
-//       // duration: const Duration(milliseconds: 500),
-//     ),
-//   );
-// }
-
 // pick image from gallery or camera
 Future<File?> pickImage({
   required bool fromCamera,
@@ -303,3 +293,10 @@ Widget messageToShow({
       );
   }
 }
+
+// default list of emoji reactions and plus sign at the end for more emojies
+// emojis : like emojis, love, laugh, sad, angry, wow, and plus sign
+List<String> reactions = ['👍', '😅', '😂', '❤️', '😭', '😡', '😲', '➕'];
+
+// list of context menu for reply, copy and delete
+List<String> contextMenu = ['Reply', 'Copy', 'Delete'];

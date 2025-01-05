@@ -67,6 +67,11 @@ class Constant {
   static const String verificationId = 'verificationId';
   static const String userModel = 'userModel';
 
+  //Error
+
+  static const String codeAutoRetrivalTimeOut =
+      'Code auto-retrieval timed out. Please request a new code.';
+
   // messages constant
   static const String messageId = 'messageId';
   static const String messageText = 'messageText';
@@ -115,6 +120,8 @@ class Constant {
   static const String you = 'you';
   static const String chatFiles = 'chat files';
   static const String gallery = 'gallery';
+  static const String maintain = 'maintenance';
+  static const String maintainMessage = 'ceci est en maintenance';
 
   // appBar title Constant
   static const String friendScreenAppTitle = 'your friends';

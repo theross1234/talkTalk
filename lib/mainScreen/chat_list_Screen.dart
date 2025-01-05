@@ -4,7 +4,6 @@ import 'package:chatchat/providers/chat_provider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
-import 'package:chatchat/widget/frienList.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
