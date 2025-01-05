@@ -4,6 +4,7 @@ import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/audioPlayerWidget.dart';
 import 'package:chatchat/widget/openfilewidget';
 import 'package:chatchat/widget/videoPlayerWidget_another.dart';
+import 'package:chatchat/widget/voicePlayer.dart';
 import 'package:flutter/material.dart';
 
 class DisplayMessageType extends StatefulWidget {
@@ -84,6 +85,12 @@ class _DisplayMessageTypeState extends State<DisplayMessageType> {
             audioUrl: widget.message,
             colors: widget.color,
           );
+        // return VoicesMessage(
+        //   audioUrl: widget.message,
+        //   backgroundColor: Colors.black,
+        //   fixedWaveColor: const Color.fromARGB(255, 255, 0, 0),
+        //   liveWaveColor: const Color.fromARGB(255, 255, 255, 255),
+        // );
         case MessageEnum.video:
           // return VideoPlayerWidget(
           //   videoUrl: widget.message,

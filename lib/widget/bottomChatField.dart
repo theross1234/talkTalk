@@ -5,6 +5,7 @@ import 'package:chatchat/providers/chat_provider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/global_method.dart';
 import 'package:chatchat/widget/message_reply_preview.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_sound_record/flutter_sound_record.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -53,6 +54,42 @@ class _BottomChatFieldState extends State<BottomChatField>
   late AnimationController _sendButtonAnimationController;
   late AnimationController _animationShowModalController;
   late Animation<double> _scaleAnimation;
+  bool isShowEmojiPicker = false;
+
+  // method to hide emoji container
+  void hideEmojiContainer() {
+    setState(() {
+      isShowEmojiPicker = false;
+    });
+  }
+
+  // show emoji container
+  void showEmojiContainer() {
+    setState(() {
+      isShowEmojiPicker = true;
+    });
+  }
+
+  // show keyboard
+  void showKeyboard() {
+    _focusNode.requestFocus();
+  }
+
+  // hide keyboard
+  void hideKeyboard() {
+    _focusNode.unfocus();
+  }
+
+  // toggle emoji and keyboard container
+  void toggleEmojiKeyboard() {
+    if (isShowEmojiPicker) {
+      showKeyboard();
+      hideEmojiContainer();
+    } else {
+      hideKeyboard();
+      showEmojiContainer();
+    }
+  }
 
   @override
   void initState() {
@@ -366,93 +403,149 @@ class _BottomChatFieldState extends State<BottomChatField>
     return Consumer<ChatProvider>(builder: (context, chatProvider, child) {
       final messageReply = chatProvider.messageReplyModel;
       final isMessageReply = messageReply != null;
-      return Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-          ),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-          children: [
-            isMessageReply
-                ? const MessageReplyPreview()
-                : const SizedBox.shrink(),
-            Row(
+      return Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              border: Border.all(
+                color: Theme.of(context).primaryColor,
+              ),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Column(
               children: [
-                chatProvider.isLoading
-                    ? const CircularProgressIndicator(
-                        color: Colors.white,
-                      )
-                    : IconButton(
-                        onPressed: () {
-                          final RenderBox renderBox =
-                              context.findRenderObject() as RenderBox;
-                          final Offset position =
-                              renderBox.localToGlobal(Offset.zero);
-                          _showCustomModal(context, position);
-                        },
-                        icon: const Icon(
-                          Icons.attach_file,
-                          color: Colors.white,
-                        ),
-                      ),
-                Expanded(
-                  child: TextFormField(
-                    controller: _messageController,
-                    focusNode: _focusNode,
-                    decoration: const InputDecoration(
-                      hintText: Constant.sendMessage,
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        isShowSendButton = value.isNotEmpty;
-                      });
-                    },
-                  ),
-                ),
-                chatProvider.isLoading
-                    ? SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: Lottie.asset(
-                          AssetsManager
-                              .sendingLottie, // Path to your Lottie file
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: isShowSendButton
-                            ? sendTextMessageToFirestore
-                            : null,
-                        onLongPress:
-                            isShowSendButton ? null : startRecordingAudio,
-                        onLongPressUp: stopRecordingAudio,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: const Color.fromARGB(255, 30, 62, 88),
-                          ),
-                          margin: const EdgeInsets.all(5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: isShowSendButton
+                isMessageReply
+                    ? const MessageReplyPreview()
+                    : const SizedBox.shrink(),
+                Row(
+                  children: [
+                    chatProvider.isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        :
+                        // emoji button
+                        IconButton(
+                            onPressed: () {
+                              toggleEmojiKeyboard();
+                            },
+                            icon: isShowEmojiPicker
                                 ? const Icon(
-                                    Icons.arrow_upward,
+                                    Icons.keyboard_outlined,
                                     color: Colors.white,
                                   )
                                 : const Icon(
-                                    Icons.mic,
+                                    Icons.emoji_emotions_outlined,
                                     color: Colors.white,
                                   ),
                           ),
-                        ),
+                    // attachment button
+                    IconButton(
+                      onPressed: () {
+                        final RenderBox renderBox =
+                            context.findRenderObject() as RenderBox;
+                        final Offset position =
+                            renderBox.localToGlobal(Offset.zero);
+                        _showCustomModal(context, position);
+                      },
+                      icon: const Icon(
+                        Icons.attach_file,
+                        color: Colors.white,
                       ),
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        onTap: () {
+                          if (isShowEmojiPicker) {
+                            toggleEmojiKeyboard();
+                          }
+                        },
+                        controller: _messageController,
+                        focusNode: _focusNode,
+                        decoration: const InputDecoration(
+                          hintText: Constant.sendMessage,
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            isShowSendButton = value.isNotEmpty;
+                          });
+                        },
+                      ),
+                    ),
+                    chatProvider.isLoading
+                        ? SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: Lottie.asset(
+                              AssetsManager
+                                  .sendingLottie, // Path to your Lottie file
+                              fit: BoxFit.contain,
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: isShowSendButton
+                                ? sendTextMessageToFirestore
+                                : null,
+                            onLongPress:
+                                isShowSendButton ? null : startRecordingAudio,
+                            onLongPressUp: stopRecordingAudio,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: const Color.fromARGB(255, 30, 62, 88),
+                              ),
+                              margin: const EdgeInsets.all(5),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: isShowSendButton
+                                    ? const Icon(
+                                        Icons.arrow_upward,
+                                        color: Colors.white,
+                                      )
+                                    : const Icon(
+                                        Icons.mic,
+                                        color: Colors.white,
+                                      ),
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          // show emoji container
+          isShowEmojiPicker
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  child: EmojiPicker(
+                    onEmojiSelected: (category, Emoji emoji) {
+                      _messageController.text =
+                          _messageController.text + emoji.emoji;
+                      if (!isShowSendButton) {
+                        setState(() {
+                          isShowSendButton = true;
+                        });
+                      }
+                    },
+                    onBackspacePressed: () {
+                      _messageController.text = _messageController
+                          .text.characters
+                          .skipLast(1)
+                          .toString();
+                      if (isShowSendButton && _messageController.text.isEmpty) {
+                        setState(() {
+                          isShowSendButton = false;
+                        });
+                      }
+                    },
+                    //   config: Config(
+
+                    // ),
+                  ))
+              : const SizedBox.shrink(),
+        ],
       );
     });
   }

@@ -34,7 +34,7 @@ class MessageWidget extends StatelessWidget {
               child: Container(
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 41, 75, 103),
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Stack(

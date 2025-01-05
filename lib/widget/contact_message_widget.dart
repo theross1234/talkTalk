@@ -35,7 +35,7 @@ class ContactMessageWidget extends StatelessWidget {
                 child: Container(
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: Theme.of(context).primaryColor.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Stack(

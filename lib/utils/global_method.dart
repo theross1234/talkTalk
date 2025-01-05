@@ -2,16 +2,12 @@ import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chatchat/models/message_reply_model.dart';
-import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:date_format/date_format.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:open_file/open_file.dart';
 
 // pick image from gallery or camera
 Future<File?> pickImage({
@@ -239,7 +235,7 @@ Widget messageToShow({
           ),
           Text(
             style: TextStyle(color: Colors.grey),
-            'audio',
+            'voice message',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           )
@@ -300,3 +296,58 @@ List<String> reactions = ['👍', '😅', '😂', '❤️', '😭', '😡', '�
 
 // list of context menu for reply, copy and delete
 List<String> contextMenu = ['Reply', 'Copy', 'Delete'];
+
+void showSimpleSnackBar({
+  required BuildContext context,
+  required String message,
+  Color backgroundColor = Colors.black,
+  Duration duration = const Duration(seconds: 3),
+  //SnackBarAction? action,
+}) {
+  final snackBar = SnackBar(
+    content: Text(
+      message,
+      style: const TextStyle(color: Colors.white),
+    ),
+    backgroundColor: backgroundColor,
+    duration: duration,
+    //action: action,
+    behavior: SnackBarBehavior.floating,
+    margin: const EdgeInsets.all(10.0),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8.0),
+    ),
+    animation: CurvedAnimation(
+        curve: Curves.easeInOut,
+        parent: AnimationController(
+          duration: const Duration(milliseconds: 500),
+          vsync: NavigatorState(),
+        )),
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
+
+void showSnackBar(
+  BuildContext context, {
+  required String content,
+  Color backgroundColor = Colors.black,
+  Duration duration = const Duration(seconds: 2),
+  SnackBarBehavior behavior = SnackBarBehavior.floating,
+  EdgeInsetsGeometry margin = const EdgeInsets.all(10),
+  double elevation = 6.0,
+}) {
+  final snackBar = SnackBar(
+    content: Text(content),
+    backgroundColor: backgroundColor.withOpacity(0.3),
+    duration: duration,
+    behavior: behavior,
+    elevation: elevation,
+    margin: behavior == SnackBarBehavior.floating ? margin : null,
+    shape: behavior == SnackBarBehavior.floating
+        ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))
+        : null,
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+}
