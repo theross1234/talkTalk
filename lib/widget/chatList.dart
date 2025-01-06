@@ -8,6 +8,7 @@ import 'package:chatchat/utils/global_method.dart';
 import 'package:chatchat/widget/contact_message_widget.dart';
 import 'package:chatchat/widget/message_widget.dart';
 import 'package:chatchat/widget/reactions_dialog.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -66,25 +67,64 @@ class _ChatlistState extends State<Chatlist> {
     showDialog(
         context: context,
         builder: (context) => ReactionsDialog(
-            uid: uid,
+            isMyMessage: uid,
             message: message,
             onReactionTap: (reaction) {
-              Navigator.pop(context);
-              print("$reaction is selected");
-              // if it's a plus reaction show bottom sheet with emojis keyboard
-              if (reaction == '➕') {
-                // TODO: show emoji keyboard
-              } else {
-                // TODO: add reaction to message
-              }
+              Future.delayed(const Duration(milliseconds: 500), () {
+                Navigator.pop(context);
+                print("$reaction is selected");
+                // if it's a plus reaction show bottom sheet with emojis keyboard
+                if (reaction == '➕') {
+                  showEmojiContainer();
+                } else {
+                  // TODO: add reaction to message
+                }
+              });
             },
             onContextMenuTap: (item) {
-              Navigator.pop(context);
-              onContextMenuClicked(
-                item: item,
-                message: message,
-              );
+              Future.delayed(const Duration(milliseconds: 500), () {
+                Navigator.pop(context);
+                onContextMenuClicked(item: item, message: message);
+              });
             }));
+  }
+
+  void showEmojiContainer() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => SizedBox(
+            height: 300,
+            //color: Colors.white,
+            child: EmojiPicker(
+              onEmojiSelected: (category, emoji) {
+                Navigator.pop(context);
+                print(emoji);
+                // TODO: add emoji to message
+              },
+              onBackspacePressed: () {
+                print("Backspace");
+              },
+              //   config: Config(
+              //     columns: 7,
+              //     // Issue: https://github.com/flutter/flutter/issues/28894
+              //     emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+              //     verticalSpacing: 0,
+              //     horizontalSpacing: 0,
+              //     gridPadding: EdgeInsets.zero,
+              //     initCategory: Category.RECENT,
+              //     bgColor: const Color(0xFFF2F2F2),
+              //     indicatorColor: Colors.blue,
+              //     iconColor: Colors.grey,
+              //     iconColorSelected: Colors.blue,
+              //     progressIndicatorColor: Colors.blue,
+              //     backspaceColor: Colors.blue,
+              //     skinToneDialogBgColor: Colors.white,
+              //     skinToneIndicatorColor: Colors.grey,
+              //     enableSkinTones: true,
+              //     showRecentsTab: true,
+              //     recentsLimit: 28,
+              // )
+            )));
   }
 
   @override

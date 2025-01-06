@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:animate_do/animate_do.dart';
 import 'package:chatchat/models/message_model.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
@@ -6,12 +9,12 @@ import 'package:flutter/material.dart';
 class ReactionsDialog extends StatefulWidget {
   const ReactionsDialog(
       {super.key,
-      required this.uid,
+      required this.isMyMessage,
       required this.message,
       required this.onReactionTap,
       required this.onContextMenuTap});
 
-  final String uid;
+  final Bool isMyMessage;
   final MessageModel message;
   final Function(String) onReactionTap;
   final Function(String) onContextMenuTap;
@@ -21,18 +24,20 @@ class ReactionsDialog extends StatefulWidget {
 }
 
 class _ReactionsDialogState extends State<ReactionsDialog> {
+  bool reactionCliqued = false;
+  int? reactionCliquedIndex;
+  bool contextMenuCliqued = false;
+  int? contextMenuCliquedIndex;
   @override
   Widget build(BuildContext context) {
-    final isMyMessage = widget.uid == widget.message.senderUid;
     return Align(
-      alignment: isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: Alignment.centerRight,
       child: IntrinsicWidth(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Align(
-                alignment:
-                    isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: Alignment.centerRight,
                 child: Material(
                   color: Colors.transparent,
                   child: Padding(
@@ -55,38 +60,63 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                         children: [
                           for (final reaction in reactions)
                             InkWell(
-                              onTap: () {
-                                widget.onReactionTap(reaction);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  reaction,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    //fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            )
+                                onTap: () {
+                                  widget.onReactionTap(reaction);
+                                  setState(() {
+                                    reactionCliqued = true;
+                                    reactionCliquedIndex =
+                                        reactions.indexOf(reaction);
+                                  });
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    setState(() {
+                                      reactionCliqued = false;
+                                    });
+                                  });
+                                },
+                                child: reactionCliqued &&
+                                        reactionCliquedIndex ==
+                                            reactions.indexOf(reaction)
+                                    ? Pulse(
+                                        infinite: false,
+                                        duration: const Duration(seconds: 1),
+                                        animate: reactionCliqued,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            reaction,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          reaction,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ))
                         ],
                       ),
                     ),
                   ),
                 )),
             Align(
-                alignment:
-                    isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: Alignment.centerRight,
                 child: Material(
                   color: const Color.fromRGBO(0, 0, 0, 0),
                   child: Padding(
-                    padding: isMyMessage
+                    padding: widget.isMyMessage != null
                         ? const EdgeInsets.only(left: 50, right: 10)
                         : const EdgeInsets.only(left: 10, right: 50),
                     child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            color: isMyMessage
+                            color: widget.isMyMessage == true
                                 ? Theme.of(context).cardColor
                                 : Theme.of(context)
                                     .primaryColor
@@ -94,7 +124,7 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                color: isMyMessage
+                                color: widget.isMyMessage == true
                                     ? Theme.of(context).cardColor
                                     : Theme.of(context)
                                         .primaryColor
@@ -112,7 +142,6 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.white,
-                                    //fontWeight: FontWeight.bold,
                                   ),
                                 )
                               : widget.message.messageType == MessageEnum.video
@@ -201,19 +230,20 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                   ),
                 )),
             Align(
-                alignment:
-                    isMyMessage ? Alignment.centerRight : Alignment.centerLeft,
+                alignment: widget.isMyMessage == true
+                    ? Alignment.centerRight
+                    : Alignment.centerLeft,
                 child: Material(
                   color: const Color.fromRGBO(0, 0, 0, 0),
                   child: Padding(
-                      padding: isMyMessage
+                      padding: widget.isMyMessage == true
                           ? const EdgeInsets.only(left: 50, right: 10)
                           : const EdgeInsets.only(left: 10, right: 50),
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.5,
                         margin: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                            color: isMyMessage
+                            color: widget.isMyMessage == true
                                 ? Theme.of(context).cardColor
                                 : Theme.of(context)
                                     .primaryColor
@@ -221,7 +251,7 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                color: isMyMessage
+                                color: widget.isMyMessage == true
                                     ? Theme.of(context).cardColor
                                     : Theme.of(context)
                                         .primaryColor
@@ -238,6 +268,17 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                               InkWell(
                                 onTap: () {
                                   widget.onContextMenuTap(menu);
+                                  setState(() {
+                                    contextMenuCliqued = true;
+                                    contextMenuCliquedIndex =
+                                        contextMenu.indexOf(menu);
+                                  });
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    setState(() {
+                                      contextMenuCliqued = false;
+                                    });
+                                  });
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -250,16 +291,31 @@ class _ReactionsDialogState extends State<ReactionsDialog> {
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16,
-                                          //fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Icon(
-                                        menu == 'Reply'
-                                            ? Icons.reply
-                                            : menu == 'Copy'
-                                                ? Icons.copy
-                                                : Icons.delete,
-                                      ),
+                                      contextMenuCliqued &&
+                                              contextMenuCliquedIndex ==
+                                                  contextMenu.indexOf(menu)
+                                          ? Pulse(
+                                              infinite: false,
+                                              duration:
+                                                  const Duration(seconds: 1),
+                                              animate: contextMenuCliqued,
+                                              child: Icon(
+                                                menu == 'Reply'
+                                                    ? Icons.reply
+                                                    : menu == 'Copy'
+                                                        ? Icons.copy
+                                                        : Icons.delete,
+                                              ),
+                                            )
+                                          : Icon(
+                                              menu == 'Reply'
+                                                  ? Icons.reply
+                                                  : menu == 'Copy'
+                                                      ? Icons.copy
+                                                      : Icons.delete,
+                                            ),
                                     ],
                                   ),
                                 ),
