@@ -26,7 +26,7 @@ class _PeoplescreenState extends State<Peoplescreen> {
         Padding(
             padding: const EdgeInsets.all(8.0),
             child: CupertinoSearchTextField(
-              placeholder: "Search",
+              placeholder: Constant.search,
               onChanged: (value) {},
             )),
 

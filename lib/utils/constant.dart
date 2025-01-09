@@ -4,6 +4,16 @@ class Constant {
   static const String appTagLine = 'Chat with your friends';
   static const String appVersion = '1.0.0';
 
+  // home screen related constants
+  static const String private = 'private';
+  static const String public = 'public';
+  static const String group = 'groups';
+  static const String chat = 'chat';
+  static const String people = 'people';
+  static const String friend = 'friend';
+  static const String search = 'search';
+  static const String searchFriend = 'search friend';
+
   // screens Routes
   static const String loginScreen = '/loginScreen';
   static const String otpScreen = '/otpScreen';
@@ -87,8 +97,6 @@ class Constant {
   static const String repliedMessage = 'repliedMessage';
   static const String repliedTo = 'repliedTo';
   static const String repliedMessageType = 'repliedMessageType';
-  // static const String messageStatusReadByBoth = 'readByBoth';
-  // static const String messageStatusReadByNone = 'readByNone';
 
   static const String profile = 'Profile';
   static const String somethingWentWrong = 'Something went wrong';
@@ -140,30 +148,13 @@ class Constant {
   static const String permissionNotGranted = 'permission non valide';
   static const String permissionNotGrantedAudio =
       'permission d\'acceder à l\'audio non valide';
-}
 
-enum ChatViewType { all, chat, group }
-
-enum MessageEnum { text, image, video, audio, document }
-
-enum FriendViewType { all, friend, friendRequest, groupView }
-
-// extension convertMessageEnumToString on String
-extension MessageEnumExtension on String {
-  MessageEnum toMessageEnum() {
-    switch (this) {
-      case 'text':
-        return MessageEnum.text;
-      case 'image':
-        return MessageEnum.image;
-      case 'video':
-        return MessageEnum.video;
-      case 'audio':
-        return MessageEnum.audio;
-      case 'document':
-        return MessageEnum.document;
-      default:
-        return MessageEnum.text;
-    }
-  }
+  // constant for group
+  static const String createGroup = 'Create Group';
+  static const String groupName = "group name";
+  static const String groupImage = "group image";
+  static const String groupDescription = "group description";
+  static const String groupType = "group type";
+  static const String groupMembers = "group members";
+  static const String groupSettings = "group settings";
 }

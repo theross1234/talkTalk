@@ -1,3 +1,4 @@
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/frienList.dart';
 import 'package:flutter/cupertino.dart';

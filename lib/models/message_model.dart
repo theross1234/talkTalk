@@ -1,3 +1,4 @@
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/utils/constant.dart';
 
 class MessageModel {

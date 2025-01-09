@@ -1,3 +1,4 @@
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
@@ -69,7 +70,7 @@ class Frienlist extends StatelessWidget {
                   trailing: IconButton(
                       icon: viewType == FriendViewType.friend
                           ? const Icon(Icons.message_outlined)
-                          : const Icon(Icons.pending),
+                          : const Icon(Icons.check),
                       onPressed: () async {
                         viewType == FriendViewType.friend
                             ? Navigator.pushNamed(context, Constant.chatscreen,
@@ -79,16 +80,20 @@ class Frienlist extends StatelessWidget {
                                     Constant.contactImage: user.image,
                                     Constant.groupId: '',
                                   })
-                            : await context
-                                .read<AuthenticationProvider>()
-                                .acceptFriendRequest(
-                                  friendId: user.uid,
-                                )
-                                .whenComplete(() {
-                                ScaffoldMessenger.of(context).showSnackBar(
+                            : viewType == FriendViewType.friendRequest
+                                ? await context
+                                    .read<AuthenticationProvider>()
+                                    .acceptFriendRequest(
+                                      friendId: user.uid,
+                                    )
+                                    .whenComplete(() {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('friend Accepted')));
+                                  })
+                                : ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text('friend Accepted')));
-                              });
                       }));
             },
           );

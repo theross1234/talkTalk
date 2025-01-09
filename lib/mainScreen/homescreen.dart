@@ -1,6 +1,7 @@
 //import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:chatchat/mainScreen/chat_list_Screen.dart';
-import 'package:chatchat/mainScreen/group_screen.dart';
+import 'package:chatchat/mainScreen/chatScreen/chat_list_Screen.dart';
+import 'package:chatchat/mainScreen/groups/create_group_Screen.dart';
+import 'package:chatchat/mainScreen/groups/group_screen.dart';
 import 'package:chatchat/mainScreen/peopleScreen.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/constant.dart';
@@ -117,6 +118,18 @@ class _HomeScreenState extends State<HomeScreen>
           },
           children: screens,
         ),
+        floatingActionButton: currentIndex == 1
+            ? FloatingActionButton(
+                onPressed: () {
+                  // Navigte to create group screen
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CreateGroupScreen(),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.group_add))
+            : null,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) {
@@ -134,15 +147,15 @@ class _HomeScreenState extends State<HomeScreen>
           items: const [
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.chat_bubble_2_fill),
-              label: 'chat',
+              label: Constant.chat,
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.group),
-              label: 'groups',
+              label: Constant.groups,
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.globe),
-              label: 'profile',
+              label: Constant.people,
             ),
           ],
         ));

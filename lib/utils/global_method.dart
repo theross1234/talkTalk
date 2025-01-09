@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/utils/assetManager.dart';
-import 'package:chatchat/utils/constant.dart';
 import 'package:date_format/date_format.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +117,7 @@ Widget userImageWidget({
       radius: radius,
       backgroundImage: imageUrl.isNotEmpty
           ? CachedNetworkImageProvider(imageUrl)
-          : const AssetImage(AssetsManager.userDefaultIcon) as ImageProvider,
+          : const AssetImage(AssetsManager.userDefaultIcon),
     ),
   );
 }

@@ -28,14 +28,14 @@ class VoicesMessage extends StatefulWidget {
 class _VoicesMessageState extends State<VoicesMessage> {
   final PlayerController _playerController = PlayerController();
   StreamSubscription<PlayerState>? _playerStateSubscription;
-  late String _localAudioFilePath;
+  //late String _localAudioFilePath;
 
   @override
   void initState() {
     super.initState();
     // Delay the preparation to avoid blocking the main thread
     Future.delayed(const Duration(milliseconds: 280), () async {
-      _localAudioFilePath = await _getLocalFilePath(widget.audioUrl);
+      //_localAudioFilePath = await _getLocalFilePath(widget.audioUrl);
       _prepareVoice();
       _subscribeToPlayerState();
     });
@@ -90,12 +90,12 @@ class _VoicesMessageState extends State<VoicesMessage> {
             'Failed to download audio file. Status code: ${response.statusCode}');
       }
     } else {
-      final byteData = await rootBundle.load(audioUrl);
+      //final byteData = await rootBundle.load(audioUrl);
       final tempFilePath = '${tempDir.path}/${audioUrl.split('/').last}';
-      final tempFile = File(tempFilePath)
-        ..createSync(recursive: true)
-        ..writeAsBytesSync(byteData.buffer
-            .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+      // final tempFile = File(tempFilePath)
+      //   ..createSync(recursive: true)
+      //   ..writeAsBytesSync(byteData.buffer
+      //       .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
       return tempFilePath;
     }
   }

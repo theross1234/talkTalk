@@ -1,7 +1,7 @@
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

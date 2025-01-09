@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/providers/chat_provider.dart';
 import 'package:chatchat/utils/assetManager.dart';

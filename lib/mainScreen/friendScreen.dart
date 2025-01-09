@@ -1,3 +1,4 @@
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/CustomAppBar.dart';
 import 'package:chatchat/widget/frienList.dart';
@@ -31,7 +32,7 @@ class _FriendscreenState extends State<Friendscreen> {
             Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CupertinoSearchTextField(
-                  placeholder: "Search friends",
+                  placeholder: Constant.searchFriend,
                   onChanged: (value) {
                     //TODO: Search the friend
                     //TODO: Navigate to the search result screen

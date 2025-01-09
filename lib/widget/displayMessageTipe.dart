@@ -1,9 +1,9 @@
 import 'package:appinio_video_player/appinio_video_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chatchat/utils/constant.dart';
-import 'package:chatchat/widget/audioPlayerWidget.dart';
+import 'package:chatchat/enums/enums.dart';
+import 'package:chatchat/widget/audio/audioPlayerWidget.dart';
 import 'package:chatchat/widget/openfilewidget';
-import 'package:chatchat/widget/videoPlayerWidget_another.dart';
+import 'package:chatchat/widget/video/videoPlayerWidget_another.dart';
 import 'package:flutter/material.dart';
 
 class DisplayMessageType extends StatefulWidget {

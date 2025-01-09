@@ -1,5 +1,5 @@
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/models/message_model.dart';
-import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/displayMessageTipe.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';

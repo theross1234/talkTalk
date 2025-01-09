@@ -31,11 +31,11 @@ class Displayuserimage extends StatelessWidget {
                 right: 0,
                 child: InkWell(
                   onTap: onTap,
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 20,
-                    backgroundColor: Colors.green,
-                    child: Icon(
-                      Icons.add,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: const Icon(
+                      Icons.photo_camera,
                       color: Color.fromARGB(255, 255, 255, 255),
                     ),
                   ),
@@ -54,11 +54,11 @@ class Displayuserimage extends StatelessWidget {
                 right: 0,
                 child: InkWell(
                   onTap: onTap,
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 20,
-                    backgroundColor: Colors.green,
-                    child: Icon(
-                      Icons.add,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: const Icon(
+                      Icons.photo_camera,
                       color: Color.fromARGB(255, 255, 255, 255),
                     ),
                   ),

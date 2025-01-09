@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/models/lastMessageModels.dart';
 import 'package:chatchat/models/message_model.dart';
 import 'package:chatchat/models/message_reply_model.dart';
