@@ -129,14 +129,15 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: AppBarBackButton(onPressed: () {
-            Navigator.pop(context);
-          }),
-          title: const Text(Constant.createGroup),
-          centerTitle: true,
-        ),
-        body: Padding(
+      appBar: AppBar(
+        leading: AppBarBackButton(onPressed: () {
+          Navigator.pop(context);
+        }),
+        title: const Text(Constant.createGroup),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
           padding: const EdgeInsets.symmetric(
             vertical: 10,
             horizontal: 10,
@@ -147,48 +148,48 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Displayuserimage(
+                  Flexible(
+                    child: Displayuserimage(
                       finalfileImage: finalImage,
                       radius: 50,
                       onTap: () {
                         showBottomSheet();
-                      }),
-                  const SizedBox(
-                    width: 10,
+                      },
+                    ),
                   ),
-                  buildGroupType(),
+                  const SizedBox(width: 10),
+                  Flexible(child: buildGroupType()),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
 
-              // text field for group name
+              // Text field for group name
               TextField(
-                  controller: groupNameController,
-                  maxLength: 12,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      label: Text(Constant.groupName),
-                      hintText: Constant.groupName,
-                      border: OutlineInputBorder())),
-              const SizedBox(
-                height: 10,
+                controller: groupNameController,
+                maxLength: 12,
+                textInputAction: TextInputAction.next,
+                decoration: const InputDecoration(
+                  label: Text(Constant.groupName),
+                  hintText: Constant.groupName,
+                  border: OutlineInputBorder(),
+                ),
               ),
+              const SizedBox(height: 10),
 
-              // text field for group description
+              // Text field for group description
               TextField(
-                  controller: groupDescriptionController,
-                  maxLines: 2,
-                  maxLength: 100,
-                  textInputAction: TextInputAction.done,
-                  decoration: const InputDecoration(
-                      label: Text(Constant.groupDescription),
-                      hintText: Constant.groupDescription,
-                      border: OutlineInputBorder())),
-              const SizedBox(
-                height: 10,
+                controller: groupDescriptionController,
+                maxLines: 2,
+                maxLength: 100,
+                textInputAction: TextInputAction.done,
+                decoration: const InputDecoration(
+                  label: Text(Constant.groupDescription),
+                  hintText: Constant.groupDescription,
+                  border: OutlineInputBorder(),
+                ),
               ),
+              const SizedBox(height: 10),
+
               Card(
                 color: Colors.grey.withOpacity(0.9),
                 child: Padding(
@@ -201,34 +202,35 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
+
               const Text(
-                "Selected group members",
+                Constant.selectGroupMembers,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // cuppertino search field
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
+
               CupertinoSearchTextField(
                 placeholder: Constant.search,
                 onChanged: (value) {},
               ),
+              const SizedBox(height: 10),
+
+              // Friend list with flexible height
               const SizedBox(
-                height: 10,
+                height: 400, // Adjust height as needed
+                child: Frienlist(
+                  viewType: FriendViewType.groupView,
+                ),
               ),
-              const Expanded(
-                  child: Frienlist(
-                viewType: FriendViewType.friend,
-              ))
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Column buildGroupType() {

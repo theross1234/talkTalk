@@ -2,7 +2,7 @@ enum ChatViewType { all, chat, group }
 
 enum MessageEnum { text, image, video, audio, document }
 
-enum FriendViewType { all, friend, friendRequest, groupView }
+enum FriendViewType { all, friend, friendRequest, groupView, allUsers }
 
 enum GroupType { public, private }
 

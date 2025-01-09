@@ -3,7 +3,7 @@ import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
-import 'package:chatchat/utils/global_method.dart';
+import 'package:chatchat/widget/friendWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -53,48 +53,7 @@ class Frienlist extends StatelessWidget {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               final user = data[index];
-              return ListTile(
-                  leading: userImageWidget(
-                      imageUrl: user.image,
-                      radius: 40,
-                      onTap: () {
-                        // Navigate to Profile Screen with uid as argument
-                        Navigator.pushNamed(
-                          context,
-                          Constant.profileScreen,
-                          arguments: user.uid,
-                        );
-                      }),
-                  title: Text(user.name),
-                  subtitle: Text(user.aboutMe),
-                  trailing: IconButton(
-                      icon: viewType == FriendViewType.friend
-                          ? const Icon(Icons.message_outlined)
-                          : const Icon(Icons.check),
-                      onPressed: () async {
-                        viewType == FriendViewType.friend
-                            ? Navigator.pushNamed(context, Constant.chatscreen,
-                                arguments: {
-                                    Constant.contactUid: user.uid,
-                                    Constant.contactName: user.name,
-                                    Constant.contactImage: user.image,
-                                    Constant.groupId: '',
-                                  })
-                            : viewType == FriendViewType.friendRequest
-                                ? await context
-                                    .read<AuthenticationProvider>()
-                                    .acceptFriendRequest(
-                                      friendId: user.uid,
-                                    )
-                                    .whenComplete(() {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('friend Accepted')));
-                                  })
-                                : ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('friend Accepted')));
-                      }));
+              return FriendWidget(friend: user, viewType: viewType);
             },
           );
         }

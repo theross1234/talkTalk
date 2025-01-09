@@ -1,7 +1,10 @@
+import 'package:chatchat/enums/enums.dart';
+import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
+import 'package:chatchat/widget/friendWidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -67,27 +70,30 @@ class _PeoplescreenState extends State<Peoplescreen> {
                   return ListView(
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
-                      Map<String, dynamic> data =
-                          document.data()! as Map<String, dynamic>;
-                      return ListTile(
-                        leading: userImageWidget(
-                            imageUrl: data[Constant.image],
-                            radius: 40,
-                            onTap: () {
-                              //Navigate to profile screen with uid as argument
-                              Navigator.pushNamed(
-                                context,
-                                Constant.profileScreen,
-                                arguments: document.id,
-                              );
-                            }),
-                        title: Text(data[Constant.name]),
-                        subtitle: Text(
-                          data[Constant.aboutMe],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
+                      final data = UserModel.fromMap(
+                          document.data()! as Map<String, dynamic>);
+                      return FriendWidget(
+                          friend: data, viewType: FriendViewType.allUsers);
+
+                      // ListTile(
+                      //   leading: userImageWidget(
+                      //       imageUrl: data[Constant.image],
+                      //       radius: 40,
+                      //       onTap: () {
+                      //         //Navigate to profile screen with uid as argument
+                      //         Navigator.pushNamed(
+                      //           context,
+                      //           Constant.profileScreen,
+                      //           arguments: document.id,
+                      //         );
+                      //       }),
+                      //   title: Text(data[Constant.name]),
+                      //   subtitle: Text(
+                      //     data[Constant.aboutMe],
+                      //     maxLines: 1,
+                      //     overflow: TextOverflow.ellipsis,
+                      //   ),
+                      // );
                     }).toList(),
                   );
                 })),

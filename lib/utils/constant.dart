@@ -103,6 +103,7 @@ class Constant {
   static const String viewfriendRequest = 'View Friend Request';
   static const String friendList = 'view friends';
   static const String sendfriendRequest = 'send friend request';
+  static const String friendAccepted = 'you are now friend with: ';
   static const String logout = 'logout';
   static const String logoutMessage = 'are you sure you want to logout !?';
   static const String cancel = 'cancel';
@@ -150,11 +151,23 @@ class Constant {
       'permission d\'acceder à l\'audio non valide';
 
   // constant for group
-  static const String createGroup = 'Create Group';
-  static const String groupName = "group name";
-  static const String groupImage = "group image";
-  static const String groupDescription = "group description";
-  static const String groupType = "group type";
+  static const String createGroup = 'create group';
+  static const String createrUid = 'createrUid';
+  static const String groupName = "groupName";
+  static const String groupImage = "groupImage";
+  static const String groupDescription = "groupDescription";
+  static const String lastMessageId = "lastMessageId";
   static const String groupMembers = "group members";
   static const String groupSettings = "group settings";
+  static const String groupInfo = "group info";
+  static const String selectGroupMembers = "select group members";
+  static const String groupCreatedAt = "groupCreatedAt";
+  static const String isPrivate = "isPrivate";
+  static const String editSettings = "editSettings";
+  static const String ApproveMembers = "ApproveMembers";
+  static const String lockMessages = "lockMessages";
+  static const String requestToJoin = "requestToJoin";
+  static const String groupMembersUids = "groupMembersUids";
+  static const String adminsUids = "adminsUids";
+  static const String awaitingApprovalUids = "awaitingApprovalUids";
 }
