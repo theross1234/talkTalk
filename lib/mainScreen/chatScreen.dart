@@ -41,7 +41,7 @@ class _ChatscreenState extends State<Chatscreen> {
     final groupId = args[Constant.groupId];
 
     // Vérifier si c'est un chat de groupe
-    final isGroupChat = groupId!.isNotEmpty;
+    //final isGroupChat = groupId!.isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(

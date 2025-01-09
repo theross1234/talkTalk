@@ -1,12 +1,11 @@
 import 'package:chatchat/models/message_model.dart';
-import 'package:chatchat/providers/authenticationProvider.dart';
+//import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/displayMessageTipe.dart';
-import 'package:chatchat/widget/message_reply_preview.dart';
 import 'package:chatchat/widget/stacked_reactions.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 
 class AlignMessageRightWidget extends StatelessWidget {
   const AlignMessageRightWidget({
@@ -21,16 +20,16 @@ class AlignMessageRightWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final time = formatDate(message.timeSent, [hh, ':', nn, ' ', am]);
-    final isReplying = message.repliedTo.isNotEmpty;
-    // get the reations from the list
-    final messageReations =
-        message.reactions.map((e) => e.split('=')[1]).toList();
+    // final isReplying = message.repliedTo.isNotEmpty;
+    // // get the reations from the list
+    // final messageReations =
+    //     message.reactions.map((e) => e.split('=')[1]).toList();
     final padding = message.reactions.isNotEmpty
         ? const EdgeInsets.only(left: 20.0, bottom: 25.0)
         : const EdgeInsets.only(bottom: 0.0);
 
     bool messageSeen() {
-      final uid = context.read<AuthenticationProvider>().userModel!.uid;
+      //final uid = context.read<AuthenticationProvider>().userModel!.uid;
       bool isSeen = false;
       isSeen = message.isSeen ? true : false;
 

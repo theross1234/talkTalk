@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
-import 'package:chatchat/widget/frienList.dart';
+//import 'package:chatchat/widget/frienList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';

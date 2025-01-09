@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -37,7 +36,7 @@ class _OtpScreenState extends State<OtpScreen> {
       canResendCode = false; // Cache le bouton au démarrage
     });
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (secondsLeft > 0) {
         setState(() {
           secondsLeft--; // Décrémente le compteur

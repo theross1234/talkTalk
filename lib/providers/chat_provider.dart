@@ -30,7 +30,7 @@ class ChatProvider extends ChangeNotifier {
 
   // firebase initialisation
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   // sent text message to firestore

@@ -1,4 +1,3 @@
-import 'package:chatchat/authentication/loginscreen.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';

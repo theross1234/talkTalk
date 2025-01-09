@@ -1,7 +1,6 @@
 import 'package:chatchat/models/message_model.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/widget/displayMessageTipe.dart';
-import 'package:chatchat/widget/message_reply_preview.dart';
 import 'package:chatchat/widget/stacked_reactions.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +18,10 @@ class AlignMessageLeftWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final time = formatDate(message.timeSent, [hh, ':', nn, ' ', am]);
-    final isReplying = message.repliedTo.isNotEmpty;
+    //final isReplying = message.repliedTo.isNotEmpty;
     // get the reations from the list
-    final messageReations =
-        message.reactions.map((e) => e.split('=')[1]).toList();
+    // final messageReations =
+    //     message.reactions.map((e) => e.split('=')[1]).toList();
     // check if its dark mode
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final padding = message.reactions.isNotEmpty
