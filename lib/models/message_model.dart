@@ -62,7 +62,8 @@ class MessageModel {
       senderImage: map[Constant.senderImage] ?? '',
       contactUid: map[Constant.contactUid] ?? '',
       //contactName: map[Constant.contactName] ?? '',
-      timeSent: DateTime.fromMillisecondsSinceEpoch(map[Constant.timeSent]),
+      timeSent: DateTime.fromMillisecondsSinceEpoch(
+          map[Constant.timeSent] ?? DateTime.now().millisecondsSinceEpoch),
       messageType: map[Constant.messageType].toString().toMessageEnum(),
       isSeen: map[Constant.isSeen] ?? false,
       repliedMessage: map[Constant.repliedMessage] ?? '',

@@ -196,7 +196,12 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Settingslisttile(
                     title: Constant.groupSettings,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        Constant.groupSettingsScreen,
+                      );
+                    },
                     icon: Icons.settings,
                     IconColor: Theme.of(context).primaryColor,
                   ),

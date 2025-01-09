@@ -1,6 +1,7 @@
 import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
+import 'package:chatchat/providers/group_provider.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,10 @@ class FriendWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool getValue() {
+      return context.watch<GroupProvider>().groupMembersList.contains(friend);
+    }
+
     return ListTile(
         minLeadingWidth: 0.0,
         leading:
@@ -40,8 +45,18 @@ class FriendWidget extends StatelessWidget {
                 })
             : viewType == FriendViewType.groupView
                 ? Checkbox(
-                    value: false,
-                    onChanged: (value) {},
+                    value: getValue(),
+                    onChanged: (value) {
+                      if (value == true) {
+                        context
+                            .read<GroupProvider>()
+                            .setGroupMembersList(groupMembers: friend);
+                      } else {
+                        context
+                            .read<GroupProvider>()
+                            .removeMemberFromGroup(groupMember: friend);
+                      }
+                    },
                   )
                 : const SizedBox.shrink(),
         onTap: () async {

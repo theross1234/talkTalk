@@ -84,16 +84,18 @@ class Groupmodel {
       groupDescription: map[Constant.groupDescription] ?? '',
       lastMessage: map[Constant.lastMessage] ?? '',
       senderUid: map[Constant.senderUid] ?? '',
-      groupCreatedAt:
-          DateTime.fromMillisecondsSinceEpoch(map[Constant.groupCreatedAt]),
-      timeSent: DateTime.fromMillisecondsSinceEpoch(map[Constant.timeSent]),
+      groupCreatedAt: DateTime.fromMillisecondsSinceEpoch(
+          map[Constant.groupCreatedAt] ??
+              DateTime.now().millisecondsSinceEpoch),
+      timeSent: DateTime.fromMillisecondsSinceEpoch(
+          map[Constant.timeSent] ?? DateTime.now().millisecondsSinceEpoch),
       isPrivate: map[Constant.isPrivate] ?? false,
       editSettings: map[Constant.editSettings] ?? false,
       approveMembers: map[Constant.ApproveMembers] ?? false,
       lockMessages: map[Constant.lockMessages] ?? false,
       requestToJoin: map[Constant.requestToJoin] ?? false,
-      groupMembersUids: List<String>.from(map[Constant.groupMembersUids]),
-      adminsUids: List<String>.from(map[Constant.adminsUids]),
+      groupMembersUids: List<String>.from(map[Constant.groupMembersUids] ?? []),
+      adminsUids: List<String>.from(map[Constant.adminsUids] ?? []),
       awaitingApprovalUids:
           List<String>.from(map[Constant.awaitingApprovalUids] ?? []),
     );

@@ -7,11 +7,13 @@ import 'package:chatchat/firebase_options.dart';
 import 'package:chatchat/mainScreen/chatScreen/chatScreen.dart';
 import 'package:chatchat/mainScreen/friendRequestScreen.dart';
 import 'package:chatchat/mainScreen/friendScreen.dart';
+import 'package:chatchat/mainScreen/groups/groupSettingsScreen.dart';
 import 'package:chatchat/mainScreen/homescreen.dart';
 import 'package:chatchat/mainScreen/profileScreen.dart';
 import 'package:chatchat/mainScreen/settingScreen.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/providers/chat_provider.dart';
+import 'package:chatchat/providers/group_provider.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,8 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
-        ChangeNotifierProvider(create: (_) => ChatProvider())
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
+        ChangeNotifierProvider(create: (_) => GroupProvider()),
       ],
       child: MyApp(savedThemeMode: savedThemeMode),
     ),
@@ -74,6 +77,8 @@ class MyApp extends StatelessWidget {
             Constant.friendRequestScreen: (context) =>
                 const Friendrequestscreen(),
             Constant.chatscreen: (context) => const Chatscreen(),
+            Constant.groupSettingsScreen: (context) =>
+                const GroupSettingScreen(),
           }),
     );
   }

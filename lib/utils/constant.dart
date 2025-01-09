@@ -35,6 +35,7 @@ class Constant {
   static const String logoutScreen = '/logoutScreen';
   static const String landingScreen = '/Landigscreen';
   static const String friendsScreen = '/friendsScreen';
+  static const String groupSettingsScreen = "/groupSettingsScreen";
 
   // data Const
   static const String uid = 'uid';
@@ -77,6 +78,7 @@ class Constant {
   static const String verificationId = 'verificationId';
   static const String userModel = 'userModel';
   static const String reactions = 'reactions';
+  static const String changeLanguage = 'change language';
 
   //Error
 
@@ -151,14 +153,12 @@ class Constant {
       'permission d\'acceder à l\'audio non valide';
 
   // constant for group
-  static const String createGroup = 'create group';
   static const String createrUid = 'createrUid';
   static const String groupName = "groupName";
   static const String groupImage = "groupImage";
   static const String groupDescription = "groupDescription";
   static const String lastMessageId = "lastMessageId";
   static const String groupMembers = "group members";
-  static const String groupSettings = "group settings";
   static const String groupInfo = "group info";
   static const String selectGroupMembers = "select group members";
   static const String groupCreatedAt = "groupCreatedAt";
@@ -170,4 +170,22 @@ class Constant {
   static const String groupMembersUids = "groupMembersUids";
   static const String adminsUids = "adminsUids";
   static const String awaitingApprovalUids = "awaitingApprovalUids";
+
+  //static const String groupSettingsScreen = "group chat";
+  static const String groupSettings = "group settings";
+  static const String createGroup = 'create group';
+  static const String editGroupSettings = 'edit group settings';
+  static const String settingSubltitle =
+      'Only admin can edit group info, name, image and description';
+  static const String approveNewMembers = 'Approve new members';
+  static const String approveMembersSubtitle =
+      'New members will be added after admin approval';
+  static const String requestsToJoin = 'Requests to join';
+  static const String requestsToJoinSubtitle =
+      "Request incomming members to join the group, before viewing group content";
+  static const String lockMessagesGroup = "Lock messages";
+  static const String lockMessagesSubtitle =
+      "Only admins can send messages, other members can only read messages";
+  static const String groupAdmins = "Group Admins";
+  // static const String groupAdminsSubtitle =
 }

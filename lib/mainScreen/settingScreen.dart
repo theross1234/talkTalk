@@ -90,36 +90,66 @@ class _SettingscreenState extends State<Settingscreen> {
               : const SizedBox(),
         ],
       ),
-      body: Center(
-        child: Card(
-          child: SwitchListTile(
-              title: const Text(Constant.changeTheme),
-              secondary: Container(
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isDarkMode ? Colors.white : Colors.black,
+      body: Column(
+        children: [
+          Card(
+            child: SwitchListTile(
+                title: const Text(Constant.changeLanguage),
+                secondary: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                  child: Icon(
+                    isDarkMode ? Icons.language : Icons.language_outlined,
+                    color: isDarkMode ? Colors.black : Colors.white,
+                  ),
                 ),
-                child: Icon(
-                  isDarkMode
-                      ? Icons.nightlight_rounded
-                      : Icons.wb_sunny_rounded,
-                  color: isDarkMode ? Colors.black : Colors.white,
+                value: isDarkMode,
+                onChanged: (value) {
+                  setState(() {
+                    isDarkMode = value;
+                  });
+                  if (value) {
+                    AdaptiveTheme.of(context).setDark();
+                  } else {
+                    AdaptiveTheme.of(context).setLight();
+                  }
+                }),
+          ),
+          const Divider(),
+          Card(
+            child: SwitchListTile(
+                title: const Text(Constant.changeTheme),
+                secondary: Container(
+                  height: 30,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isDarkMode ? Colors.white : Colors.black,
+                  ),
+                  child: Icon(
+                    isDarkMode
+                        ? Icons.nightlight_rounded
+                        : Icons.wb_sunny_rounded,
+                    color: isDarkMode ? Colors.black : Colors.white,
+                  ),
                 ),
-              ),
-              value: isDarkMode,
-              onChanged: (value) {
-                setState(() {
-                  isDarkMode = value;
-                });
-                if (value) {
-                  AdaptiveTheme.of(context).setDark();
-                } else {
-                  AdaptiveTheme.of(context).setLight();
-                }
-              }),
-        ),
+                value: isDarkMode,
+                onChanged: (value) {
+                  setState(() {
+                    isDarkMode = value;
+                  });
+                  if (value) {
+                    AdaptiveTheme.of(context).setDark();
+                  } else {
+                    AdaptiveTheme.of(context).setLight();
+                  }
+                }),
+          ),
+        ],
       ),
     );
   }
