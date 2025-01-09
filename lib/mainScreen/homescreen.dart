@@ -29,13 +29,13 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen>
           title: const Text(Constant.appName),
           actions: [
             Padding(
-                padding: EdgeInsets.only(right: 10.0),
+                padding: const EdgeInsets.only(right: 10.0),
                 child: userImageWidget(
                   onTap: () {
                     //Navigate to profile screen with uid as argument

@@ -66,6 +66,7 @@ class Constant {
   static const String receiverId = 'receiverId';
   static const String verificationId = 'verificationId';
   static const String userModel = 'userModel';
+  static const String reactions = 'reactions';
 
   //Error
 

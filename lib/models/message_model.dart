@@ -13,6 +13,7 @@ class MessageModel {
   final String repliedMessage;
   final String repliedTo;
   final MessageEnum repliedMessageType;
+  final List<String> reactions;
 
   MessageModel({
     required this.messageId,
@@ -27,6 +28,7 @@ class MessageModel {
     required this.repliedMessage,
     required this.repliedTo,
     required this.repliedMessageType,
+    required this.reactions,
   });
 
   // to map
@@ -45,6 +47,7 @@ class MessageModel {
       Constant.repliedMessage: repliedMessage,
       Constant.repliedTo: repliedTo,
       Constant.repliedMessageType: repliedMessageType.name,
+      Constant.reactions: reactions,
     };
   }
 
@@ -65,6 +68,7 @@ class MessageModel {
       repliedTo: map[Constant.repliedTo] ?? '',
       repliedMessageType:
           map[Constant.repliedMessageType].toString().toMessageEnum(),
+      reactions: List<String>.from(map[Constant.reactions] ?? []),
     );
   }
 
@@ -85,6 +89,7 @@ class MessageModel {
       repliedMessage: repliedMessage,
       repliedTo: repliedTo,
       repliedMessageType: repliedMessageType,
+      reactions: reactions,
     );
   }
 }

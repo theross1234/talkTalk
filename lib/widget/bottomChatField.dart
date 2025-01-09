@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/providers/chat_provider.dart';
 import 'package:chatchat/utils/assetManager.dart';
@@ -517,33 +518,36 @@ class _BottomChatFieldState extends State<BottomChatField>
           ),
           // show emoji container
           isShowEmojiPicker
-              ? SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  child: EmojiPicker(
-                    onEmojiSelected: (category, Emoji emoji) {
-                      _messageController.text =
-                          _messageController.text + emoji.emoji;
-                      if (!isShowSendButton) {
-                        setState(() {
-                          isShowSendButton = true;
-                        });
-                      }
-                    },
-                    onBackspacePressed: () {
-                      _messageController.text = _messageController
-                          .text.characters
-                          .skipLast(1)
-                          .toString();
-                      if (isShowSendButton && _messageController.text.isEmpty) {
-                        setState(() {
-                          isShowSendButton = false;
-                        });
-                      }
-                    },
-                    //   config: Config(
+              ? ElasticInDown(
+                  child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: EmojiPicker(
+                        onEmojiSelected: (category, Emoji emoji) {
+                          _messageController.text =
+                              _messageController.text + emoji.emoji;
+                          if (!isShowSendButton) {
+                            setState(() {
+                              isShowSendButton = true;
+                            });
+                          }
+                        },
+                        onBackspacePressed: () {
+                          _messageController.text = _messageController
+                              .text.characters
+                              .skipLast(1)
+                              .toString();
+                          if (isShowSendButton &&
+                              _messageController.text.isEmpty) {
+                            setState(() {
+                              isShowSendButton = false;
+                            });
+                          }
+                        },
+                        //   config: Config(
 
-                    // ),
-                  ))
+                        // ),
+                      )),
+                )
               : const SizedBox.shrink(),
         ],
       );

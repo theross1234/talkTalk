@@ -69,16 +69,22 @@ class _DisplayMessageTypeState extends State<DisplayMessageType> {
     Widget messageToShow() {
       switch (widget.type) {
         case MessageEnum.text:
-          return Text(
-            widget.message,
-            style: TextStyle(color: widget.color, fontSize: 16.0),
-            maxLines: widget.maxLines,
-            overflow: widget.overFlow,
+          return Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Text(
+              widget.message,
+              style: TextStyle(color: widget.color, fontSize: 16.0),
+              maxLines: widget.maxLines,
+              overflow: widget.overFlow,
+            ),
           );
         case MessageEnum.image:
-          return CachedNetworkImage(
-            imageUrl: widget.message,
-            fit: BoxFit.cover,
+          return Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: CachedNetworkImage(
+              imageUrl: widget.message,
+              fit: BoxFit.cover,
+            ),
           );
         case MessageEnum.audio:
           return AudioPlayerWidget(
@@ -98,8 +104,11 @@ class _DisplayMessageTypeState extends State<DisplayMessageType> {
           // );
           print(
               "/././././../././././ there is the video link ${widget.message}");
-          return VideoPlayerWidgetAnother(
-            dataSource: widget.message,
+          return Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: VideoPlayerWidgetAnother(
+              dataSource: widget.message,
+            ),
           );
         // return AspectRatio(
         //   aspectRatio: _videoPlayerController.value.aspectRatio,

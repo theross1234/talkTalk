@@ -19,7 +19,7 @@ class _ChatscreenState extends State<Chatscreen> {
   void initState() {
     super.initState();
     // Précharge l'image pour un affichage instantané
-    _backgroundImage = const AssetImage(AssetsManager.backPattern);
+    _backgroundImage = const AssetImage(AssetsManager.chatPattern);
     //precacheImage(_backgroundImage, context);
   }
 

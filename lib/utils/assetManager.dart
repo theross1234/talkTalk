@@ -8,6 +8,7 @@ class AssetsManager {
   static const String backPattern = '${_imagePath}backPattern.png';
   static const String chatlottieIcon =
       '${_lottiePath}chatLottieAAnimation.json';
+  static const String chatPattern = '${_imagePath}chatPattern.jpg';
 
   static const String pepePooLottie = '${_lottiePath}pepepoopoo.json';
   static const String pepeWaiting = '${_lottiePath}pepeWaiting.json';

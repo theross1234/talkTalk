@@ -1,13 +1,14 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:chatchat/minor_screen/reactions_context_menu.dart';
 import 'package:chatchat/models/message_model.dart';
 import 'package:chatchat/models/message_reply_model.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/providers/chat_provider.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
-import 'package:chatchat/widget/contact_message_widget.dart';
-import 'package:chatchat/widget/message_widget.dart';
+import 'package:chatchat/utils/hero_dialog_route.dart';
+import 'package:chatchat/widget/messageWidget/message_widget.dart';
 import 'package:chatchat/widget/reactions_dialog.dart';
+import 'package:chatchat/widget/stacked_reactions.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,6 +38,7 @@ class _ChatlistState extends State<Chatlist> {
   void onContextMenuClicked({required item, required message}) {
     //isMe = context.read<AuthenticationProvider>().userModel!.uid ==
     message.senderUid;
+    print("/././././././. $item /././././././.");
     switch (item) {
       case 'Reply':
         final messageReply = MessageReplyModel(
@@ -55,31 +57,42 @@ class _ChatlistState extends State<Chatlist> {
         //   context: context,
         //   message: 'Message copied to clipBoard',
         // );
-        showSnackBar(context, content: message.message);
+        //showSnackBar(context, content: message.message);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("copy to clipboard"),
+          ),
+        );
         break;
       case 'Delete':
         // TODO: delete message
+        showToast(context, 'Message deleted');
         break;
     }
   }
 
-  showReactionsDialog({required MessageModel message, required String uid}) {
+  showReactionsDialog({required MessageModel message, required bool isMe}) {
     showDialog(
         context: context,
         builder: (context) => ReactionsDialog(
-            isMyMessage: uid,
+            isMyMessage: isMe,
             message: message,
             onReactionTap: (reaction) {
-              Future.delayed(const Duration(milliseconds: 500), () {
+              if (reaction == '➕') {
                 Navigator.pop(context);
-                print("$reaction is selected");
-                // if it's a plus reaction show bottom sheet with emojis keyboard
-                if (reaction == '➕') {
-                  showEmojiContainer();
-                } else {
-                  // TODO: add reaction to message
-                }
-              });
+                // show emoji keyboard
+                showEmojiContainer(messageId: message.messageId);
+                //Navigator.pop(context);
+              } else {
+                // add reaction to message
+                sendReactionToFirestore(
+                    reaction: reaction, messageId: message.messageId);
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  Navigator.pop(context);
+                  //print("$reaction is selected");
+                  // if it's a plus reaction show bottom sheet with emojis keyboard
+                });
+              }
             },
             onContextMenuTap: (item) {
               Future.delayed(const Duration(milliseconds: 500), () {
@@ -89,7 +102,24 @@ class _ChatlistState extends State<Chatlist> {
             }));
   }
 
-  void showEmojiContainer() {
+  void sendReactionToFirestore({
+    required String reaction,
+    required String messageId,
+  }) {
+    // get the sender uid
+    final senderUid = context.read<AuthenticationProvider>().userModel!.uid;
+    context.read<ChatProvider>().sendReactionToMessage(
+        senderUid: senderUid,
+        contactUid: widget.contactUid,
+        messageId: messageId,
+        reaction: reaction,
+        isGroup: widget.groupId.isNotEmpty);
+  }
+
+  void showEmojiContainer({
+    required String messageId,
+    //required String reaction,
+  }) {
     showModalBottomSheet(
         context: context,
         builder: (context) => SizedBox(
@@ -97,33 +127,11 @@ class _ChatlistState extends State<Chatlist> {
             //color: Colors.white,
             child: EmojiPicker(
               onEmojiSelected: (category, emoji) {
+                // add emoji to message
                 Navigator.pop(context);
-                print(emoji);
-                // TODO: add emoji to message
+                sendReactionToFirestore(
+                    reaction: emoji.emoji, messageId: messageId);
               },
-              onBackspacePressed: () {
-                print("Backspace");
-              },
-              //   config: Config(
-              //     columns: 7,
-              //     // Issue: https://github.com/flutter/flutter/issues/28894
-              //     emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
-              //     verticalSpacing: 0,
-              //     horizontalSpacing: 0,
-              //     gridPadding: EdgeInsets.zero,
-              //     initCategory: Category.RECENT,
-              //     bgColor: const Color(0xFFF2F2F2),
-              //     indicatorColor: Colors.blue,
-              //     iconColor: Colors.grey,
-              //     iconColorSelected: Colors.blue,
-              //     progressIndicatorColor: Colors.blue,
-              //     backspaceColor: Colors.blue,
-              //     skinToneDialogBgColor: Colors.white,
-              //     skinToneIndicatorColor: Colors.grey,
-              //     enableSkinTones: true,
-              //     showRecentsTab: true,
-              //     recentsLimit: 28,
-              // )
             )));
   }
 
@@ -159,102 +167,178 @@ class _ChatlistState extends State<Chatlist> {
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut);
           });
+          if (snapshot.hasData) {
+            final MessageList = snapshot.data!;
+            return GroupedListView<dynamic, DateTime>(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              reverse: true,
+              elements: MessageList,
+              controller: _scrollController,
+              groupBy: (element) {
+                return DateTime(element.timeSent!.year, element.timeSent!.month,
+                    element.timeSent!.day);
+              },
+              groupHeaderBuilder: (dynamic groupByValue) =>
+                  buildDateTimeHeader(groupByValue),
+              itemBuilder: (context, dynamic element) {
+                final paddingReaction = element.reactions.isEmpty ? 0.0 : 20.0;
+                //final paddingReaction2 = element.reactions.isEmpty ? 0.0 : 20.0;
+                // set the message as seen
+                if (!element.isSeen && element.senderUid != currentUserid) {
+                  //print("%%%%%% runningi set message seen %%%%%%");
+                  context.read<ChatProvider>().setMessageSeen(
+                      groupId: widget.groupId,
+                      messageId: element.messageId,
+                      contactUid: widget.contactUid,
+                      userId: currentUserid);
+                }
+                // check if we send the last message
+                final isMe = element.senderUid == currentUserid;
+                return Stack(
+                  children: [
+                    InkWell(
+                      onLongPress: () async {
+                        //showReactionsDialog(message: element, isMe: isMe);
+                        String? item = await Navigator.of(context)
+                            .push(HeroDialogRoute(builder: (context) {
+                          return ReactionsContextMenu(
+                            isMyMessage: isMe,
+                            message: element,
+                            contactUid: widget.contactUid,
+                            groupId: widget.groupId,
+                          );
+                        }));
+                        if (item == null) return;
 
-          final MessageList = snapshot.data!;
-          return GroupedListView<dynamic, DateTime>(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            reverse: true,
-            elements: MessageList,
-            controller: _scrollController,
-            groupBy: (element) {
-              return DateTime(element.timeSent!.year, element.timeSent!.month,
-                  element.timeSent!.day);
-            },
-            groupHeaderBuilder: (dynamic groupByValue) =>
-                buildDateTimeHeader(groupByValue),
-            itemBuilder: (context, dynamic element) {
-              // set the message as seen
-              if (!element.isSeen && element.senderUid != currentUserid) {
-                //print("%%%%%% runningi set message seen %%%%%%");
-                context.read<ChatProvider>().setMessageSeen(
-                    groupId: widget.groupId,
-                    messageId: element.messageId,
-                    contactUid: widget.contactUid,
-                    userId: currentUserid);
-              }
-              // check if we send the last message
-              final isMe = element.senderUid == currentUserid;
-              return isMe
-                  ? InkWell(
-                      onLongPress: () {
-                        showReactionsDialog(
-                            message: element, uid: currentUserid);
+                        if (item == '➕') {
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            print("/././././. $item /././././.");
+                            // on show emoji picker
+                            showEmojiContainer(messageId: element.messageId);
+                          });
+                        } else {
+                          print("/././././. $item /././././.");
+                          Future.delayed(const Duration(milliseconds: 200), () {
+                            // on context menu clicked
+                            onContextMenuClicked(item: item, message: element);
+                            // switch (item) {
+                            //   case 'Reply':
+                            //     final messageReply = MessageReplyModel(
+                            //       message: element.message,
+                            //       senderName: element.senderName,
+                            //       senderUid: element.senderUid,
+                            //       senderImage: element.senderImage,
+                            //       messageType: element.messageType,
+                            //       isMe: true,
+                            //     );
+                            //     context
+                            //         .read<ChatProvider>()
+                            //         .setMessageReplyModel(messageReply);
+                            //     break;
+                            //   case 'Copy':
+                            //     Clipboard.setData(
+                            //         ClipboardData(text: element.message));
+                            //     // showSimpleSnackBar(
+                            //     //   context: context,
+                            //     //   message: 'Message copied to clipBoard',
+                            //     // );
+                            //     showSnackBar(context,
+                            //         content: "Message copied to clipBoard");
+                            //     break;
+                            //   case 'Delete':
+                            //     // TODO: delete message
+                            //     showSnackBar(context,
+                            //         content: "Message supprime");
+                            //     break;
+                            // }
+                          });
+                        }
+
+                        // //value = true;
+                        // if (value != null && value) {
+                        //   showEmojiContainer(
+                        //       messageId: element.messageId,
+                        //       reaction: element.reactions.first.reaction);
+                        // }
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: MessageWidget(
-                          messageModel: element,
-                          onRightSwipe: () {
-                            // set the message reply to true
-                            final messageReply = MessageReplyModel(
-                              message: element.message,
-                              senderName: element.senderName,
-                              senderUid: element.senderUid,
-                              senderImage: element.senderImage,
-                              messageType: element.messageType,
-                              isMe: isMe,
-                            );
-                            context
-                                .read<ChatProvider>()
-                                .setMessageReplyModel(messageReply);
-                            // CustomSnackBar.show(
-                            //     context: context, message: "message swippe");
-                          },
+                        padding: EdgeInsets.only(
+                          top: 8.0,
+                          bottom: paddingReaction,
+                          //right: 2.0,
+                        ),
+                        child: Hero(
+                          tag: element.messageId,
+                          child: MessageWidget(
+                            messageModel: element,
+                            onRightSwipe: () {
+                              // set the message reply to true
+                              final messageReply = MessageReplyModel(
+                                message: element.message,
+                                senderName: element.senderName,
+                                senderUid: element.senderUid,
+                                senderImage: element.senderImage,
+                                messageType: element.messageType,
+                                isMe: isMe,
+                              );
+                              context
+                                  .read<ChatProvider>()
+                                  .setMessageReplyModel(messageReply);
+                              // CustomSnackBar.show(
+                              //     context: context, message: "message swippe");
+                            },
+                            isViewOnly: false,
+                            isMe: isMe,
+                          ),
                         ),
                       ),
-                    )
-                  : InkWell(
-                      onLongPress: () {
-                        showReactionsDialog(
-                            message: element, uid: currentUserid);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ContactMessageWidget(
-                          messageModel: element,
-                          onRightSwipe: () {
-                            // set the message reply to true
-                            final messageReply = MessageReplyModel(
-                              message: element.message,
-                              senderName: element.senderName,
-                              senderUid: element.senderUid,
-                              senderImage: element.senderImage,
-                              messageType: element.messageType,
-                              isMe: isMe,
-                            );
-                            context
-                                .read<ChatProvider>()
-                                .setMessageReplyModel(messageReply);
-                            // CustomSnackBar.show(
-                            //     context: context, message: "message swippe");
-                          },
-                        ),
-                      ),
-                    );
-            },
-            groupComparator: (value1, value2) {
-              return value2.compareTo(value1);
-            },
-            itemComparator: (item1, item2) {
-              var firstItem = item1.timeSent;
-              var secondItem = item2.timeSent;
-              return secondItem!.compareTo(firstItem!);
-            }, // optional
-            useStickyGroupSeparators: true, // optional
-            floatingHeader: true, // optional
-            order: GroupedListOrder.ASC, // optional
-            // footer:
-            //     Text("Widget at the bottom of list"), // optional
+                    ),
+                    isMe
+                        ? Positioned(
+                            bottom: 3,
+                            right: 10,
+                            //left: isMe ? null : 20,
+                            child: StackedReactions(
+                              message: element,
+                              size: 17,
+                              onReactionTap: () {
+                                // TODO: show bottom sheet with list of people who reacted
+                              },
+                            )
+                            //: const SizedBox.shrink(),
+                            )
+                        : Positioned(
+                            bottom: 7,
+                            left: 20,
+                            child: StackedReactions(
+                              message: element,
+                              size: 17,
+                              onReactionTap: () {
+                                // TODO: show bottom sheet with list of people who reacted
+                              },
+                            )
+                            //: const SizedBox.shrink(),
+                            )
+                  ],
+                );
+              },
+              groupComparator: (value1, value2) {
+                return value2.compareTo(value1);
+              },
+              itemComparator: (item1, item2) {
+                var firstItem = item1.timeSent;
+                var secondItem = item2.timeSent;
+                return secondItem!.compareTo(firstItem!);
+              }, // optional
+              useStickyGroupSeparators: true, // optional
+              floatingHeader: true, // optional
+              order: GroupedListOrder.ASC, // optional
+              // footer:
+              //     Text("Widget at the bottom of list"), // optional
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         });
   }
