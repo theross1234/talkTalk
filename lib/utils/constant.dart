@@ -129,11 +129,16 @@ class Constant {
   static const String lastSeenappBar = 'last seen';
   static const String video = 'video';
   static const String document = 'document';
-  static const String you = 'you';
+  static const String you = 'You';
+  static const String and = 'and';
   static const String chatFiles = 'chat files';
   static const String gallery = 'gallery';
   static const String maintain = 'maintenance';
   static const String maintainMessage = 'ceci est en maintenance';
+  static const String maintenance = 'maintenance';
+  static const String done = "done";
+  static const String delete = "delete";
+  static const String selectAdmins = "select admins";
 
   // appBar title Constant
   static const String friendScreenAppTitle = 'your friends';
@@ -188,4 +193,7 @@ class Constant {
       "Only admins can send messages, other members can only read messages";
   static const String groupAdmins = "Group Admins";
   // static const String groupAdminsSubtitle =
+  static const String noAdmins = "you are the only admin";
+  static const String emptyGroupMember =
+      "No members yet in the group add members before add other admins";
 }

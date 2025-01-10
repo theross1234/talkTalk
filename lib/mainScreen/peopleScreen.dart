@@ -3,7 +3,6 @@ import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
 import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
-import 'package:chatchat/utils/global_method.dart';
 import 'package:chatchat/widget/friendWidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';

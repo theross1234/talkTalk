@@ -12,14 +12,18 @@ class FriendWidget extends StatelessWidget {
     super.key,
     required this.friend,
     required this.viewType,
+    this.isAdminView = false,
   });
   final UserModel friend;
   final FriendViewType viewType;
+  final bool isAdminView;
 
   @override
   Widget build(BuildContext context) {
     bool getValue() {
-      return context.watch<GroupProvider>().groupMembersList.contains(friend);
+      return isAdminView
+          ? context.watch<GroupProvider>().groupAdminList.contains(friend)
+          : context.watch<GroupProvider>().groupMembersList.contains(friend);
     }
 
     return ListTile(
@@ -47,15 +51,21 @@ class FriendWidget extends StatelessWidget {
                 ? Checkbox(
                     value: getValue(),
                     onChanged: (value) {
-                      if (value == true) {
-                        context
-                            .read<GroupProvider>()
-                            .setGroupMembersList(groupMembers: friend);
-                      } else {
-                        context
-                            .read<GroupProvider>()
-                            .removeMemberFromGroup(groupMember: friend);
-                      }
+                      isAdminView
+                          ? value!
+                              ? context
+                                  .read<GroupProvider>()
+                                  .addMemberToAdminList(groupAdmin: friend)
+                              : context
+                                  .read<GroupProvider>()
+                                  .removeAdminFromGroup(groupAdmin: friend)
+                          : value!
+                              ? context
+                                  .read<GroupProvider>()
+                                  .addMemberToGroupList(groupMembers: friend)
+                              : context
+                                  .read<GroupProvider>()
+                                  .removeMemberFromGroup(groupMember: friend);
                     },
                   )
                 : const SizedBox.shrink(),

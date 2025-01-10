@@ -54,13 +54,13 @@ class GroupProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setGroupMembersList({required UserModel groupMembers}) {
+  void addMemberToGroupList({required UserModel groupMembers}) {
     // _groupMembersList.clear();
     _groupMembersList.add(groupMembers);
     notifyListeners();
   }
 
-  void setGroupAdminList({required UserModel groupAdmin}) {
+  void addMemberToAdminList({required UserModel groupAdmin}) {
     // _groupAdminList.clear();
     _groupAdminList.add(groupAdmin);
     notifyListeners();
