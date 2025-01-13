@@ -1,6 +1,11 @@
 import 'dart:io';
 
+import 'package:chatchat/authentication/landigScreen.dart';
 import 'package:chatchat/enums/enums.dart';
+import 'package:chatchat/models/groupModel.dart';
+import 'package:chatchat/providers/authenticationProvider.dart';
+import 'package:chatchat/providers/group_provider.dart';
+import 'package:chatchat/utils/assetManager.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
 import 'package:chatchat/widget/CustomAppBar.dart';
@@ -8,9 +13,12 @@ import 'package:chatchat/widget/displayUserImage.dart';
 import 'package:chatchat/widget/frienList.dart';
 import 'package:chatchat/widget/groupTypeListTile.dart';
 import 'package:chatchat/widget/settingsListTile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:provider/provider.dart';
 
 class CreateGroupScreen extends StatefulWidget {
   const CreateGroupScreen({super.key});
@@ -26,7 +34,7 @@ File? finalImage;
 class _CreateGroupScreenState extends State<CreateGroupScreen> {
   void selectedImage(bool fromCamera) async {
     fileImage = await pickImage(
-        fromCamera: true,
+        fromCamera: fromCamera,
         onFail: (String message) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(message),
@@ -94,7 +102,6 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                   ListTile(
                     onTap: () {
                       selectedImage(false);
-
                       popDialog();
                     },
                     leading: const Icon(Icons.image),
@@ -126,6 +133,73 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     super.dispose();
   }
 
+  //GroupType groupValue = GroupType.private;
+
+  void createGroup() {
+    final uid = context.read<AuthenticationProvider>().userModel!.uid;
+    final groupProvider = context.read<GroupProvider>();
+    // check if group name is empty
+    if (groupNameController.text.isEmpty ||
+        groupNameController.text.length < 3) {
+      showCustomSnackBar(
+          context: context,
+          title: Constant.warning,
+          message: Constant.emptyGroupName,
+          contentType: ContentType.warning);
+    }
+
+    // check if group description is empty
+    if (groupDescriptionController.text.isEmpty) {
+      showCustomSnackBar(
+          context: context,
+          title: Constant.warning,
+          message: Constant.emptyGroupDescription,
+          contentType: ContentType.warning);
+    }
+
+    // group model
+    GroupModel groupModel = GroupModel(
+        groupId: uid,
+        createrUid: uid,
+        groupName: groupNameController.text,
+        groupImage: '',
+        messageType: MessageEnum.text.name,
+        groupDescription: groupDescriptionController.text,
+        lastMessage: '',
+        senderUid: '',
+        groupCreatedAt: DateTime.now(),
+        timeSent: DateTime.now(),
+        isPrivate: groupValue == GroupType.private ? true : false,
+        editSettings: true,
+        approveMembers: false,
+        lockMessages: false,
+        requestToJoin: false,
+        groupMembersUids: [],
+        adminsUids: [],
+        awaitingApprovalUids: []);
+    // create group
+    groupProvider.createGroup(
+        groupModel: groupModel,
+        groupImage: finalImage,
+        onSuccess: () {
+          showCustomSnackBar(
+            context: context,
+            title: Constant.success,
+            message: Constant.groupCreated,
+            contentType: ContentType.success,
+          );
+          Navigator.pop(context);
+        },
+        onFail: (e) {
+          showCustomSnackBar(
+            context: context,
+            title: Constant.error,
+            message: e.toString(),
+            contentType: ContentType.failure,
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,6 +209,25 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         }),
         title: const Text(Constant.createGroup),
         centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundColor: context.watch<GroupProvider>().isLoading == true
+                  ? Colors.transparent
+                  : Theme.of(context).primaryColor,
+              child: context.watch<GroupProvider>().isLoading == true
+                  ? const CircularProgressIndicator()
+                  : IconButton(
+                      onPressed: () {
+                        // create group
+                        createGroup();
+                      },
+                      icon: const Icon(Icons.check),
+                    ),
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(

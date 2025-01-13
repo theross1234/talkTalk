@@ -73,7 +73,7 @@ class _ReactionsContextMenuState extends State<ReactionsContextMenu> {
         //   context: context,
         //   message: 'Message copied to clipBoard',
         // );
-        showSnackBar(context, content: message.message);
+        showToast(context, message.message);
         break;
       case 'Delete':
         // TODO: delete message

@@ -4,6 +4,7 @@ import 'package:chatchat/mainScreen/groups/create_group_Screen.dart';
 import 'package:chatchat/mainScreen/groups/group_screen.dart';
 import 'package:chatchat/mainScreen/peopleScreen.dart';
 import 'package:chatchat/providers/authenticationProvider.dart';
+import 'package:chatchat/providers/group_provider.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
 import 'package:flutter/cupertino.dart';
@@ -122,11 +123,21 @@ class _HomeScreenState extends State<HomeScreen>
             ? FloatingActionButton(
                 onPressed: () {
                   // Navigte to create group screen
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CreateGroupScreen(),
-                    ),
-                  );
+                  context
+                      .read<GroupProvider>()
+                      .clearGroupMembersList()
+                      .whenComplete(() {
+                    context
+                        .read<GroupProvider>()
+                        .clearGroupAdminList()
+                        .whenComplete(() {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CreateGroupScreen(),
+                        ),
+                      );
+                    });
+                  });
                 },
                 child: const Icon(Icons.group_add))
             : null,

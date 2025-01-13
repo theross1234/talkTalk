@@ -33,16 +33,18 @@ class Frienlist extends StatelessWidget {
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(
-            child: Column(
-              children: [
-                SizedBox(
-                    height: MediaQuery.of(context).size.height / 2,
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Lottie.asset(AssetsManager.pepePooLottie)),
-                const Text(
-                  Constant.noFriend,
-                )
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height / 2,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Lottie.asset(AssetsManager.pepePooLottie)),
+                  const Text(
+                    Constant.noFriend,
+                  )
+                ],
+              ),
             ),
           );
         }

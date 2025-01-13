@@ -49,11 +49,6 @@ class _UserinformationscreenState extends State<Userinformationscreen> {
     if (fileImage != null) {
       await cropImage(fileImage!.path);
     }
-    // if (fileImage != null) {
-    //   setState(() {
-    //     finalImage = fileImage;
-    //   });
-    // }
   }
 
   Future<void> cropImage(filePath) async {

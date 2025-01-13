@@ -1,14 +1,14 @@
 import 'package:chatchat/enums/enums.dart';
 import 'package:chatchat/utils/constant.dart';
 
-class Groupmodel {
+class GroupModel {
   String groupId;
   String createrUid;
   String groupName;
   String groupImage;
   //String groupAdmin;
-  MessageEnum messageType;
-  String lastMessageId;
+  String messageType;
+  //String lastMessageId;
   String groupDescription;
   String lastMessage;
   String senderUid;
@@ -23,14 +23,14 @@ class Groupmodel {
   List<String> adminsUids;
   List<String> awaitingApprovalUids;
 
-  Groupmodel({
+  GroupModel({
     required this.groupId,
     required this.createrUid,
     required this.groupName,
     required this.groupImage,
     //required this.groupAdmin,
     required this.messageType,
-    required this.lastMessageId,
+    //required this.lastMessageId,
     required this.groupDescription,
     required this.lastMessage,
     required this.senderUid,
@@ -55,7 +55,7 @@ class Groupmodel {
       Constant.groupImage: groupImage,
       //'groupAdmin': groupAdmin,
       Constant.messageType: messageType,
-      Constant.lastMessageId: lastMessageId,
+      //Constant.lastMessageId: lastMessageId,
       Constant.groupDescription: groupDescription,
       Constant.lastMessage: lastMessage,
       Constant.senderUid: senderUid,
@@ -73,14 +73,14 @@ class Groupmodel {
   }
 
   // from map
-  factory Groupmodel.fromMap(Map<String, dynamic> map) {
-    return Groupmodel(
+  factory GroupModel.fromMap(Map<String, dynamic> map) {
+    return GroupModel(
       groupId: map[Constant.groupId] ?? '',
       createrUid: map[Constant.createrUid] ?? '',
       groupName: map[Constant.groupName] ?? '',
       groupImage: map[Constant.groupImage] ?? '',
-      messageType: map[Constant.messageType].toString().toMessageEnum(),
-      lastMessageId: map[Constant.lastMessageId] ?? '',
+      messageType: map[Constant.messageType] ?? '',
+      //lastMessageId: map[Constant.lastMessageId] ?? '',
       groupDescription: map[Constant.groupDescription] ?? '',
       lastMessage: map[Constant.lastMessage] ?? '',
       senderUid: map[Constant.senderUid] ?? '',

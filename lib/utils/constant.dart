@@ -81,9 +81,16 @@ class Constant {
   static const String changeLanguage = 'change language';
 
   //Error
-
   static const String codeAutoRetrivalTimeOut =
       'Code auto-retrieval timed out. Please request a new code.';
+  static const String emptyGroupName =
+      'Group name cannot be empty or less than 3 character';
+  static const String emptyGroupDescription =
+      'Group description cannot be empty';
+
+  // success messages
+  //static const String success = 'Success';
+  static const String groupCreated = 'Group created successfully';
 
   // messages constant
   static const String messageId = 'messageId';
@@ -196,4 +203,5 @@ class Constant {
   static const String noAdmins = "you are the only admin";
   static const String emptyGroupMember =
       "No members yet in the group add members before add other admins";
+  static const String groupImages = "groupImages";
 }

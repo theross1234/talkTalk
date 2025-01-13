@@ -73,26 +73,6 @@ class _PeoplescreenState extends State<Peoplescreen> {
                           document.data()! as Map<String, dynamic>);
                       return FriendWidget(
                           friend: data, viewType: FriendViewType.allUsers);
-
-                      // ListTile(
-                      //   leading: userImageWidget(
-                      //       imageUrl: data[Constant.image],
-                      //       radius: 40,
-                      //       onTap: () {
-                      //         //Navigate to profile screen with uid as argument
-                      //         Navigator.pushNamed(
-                      //           context,
-                      //           Constant.profileScreen,
-                      //           arguments: document.id,
-                      //         );
-                      //       }),
-                      //   title: Text(data[Constant.name]),
-                      //   subtitle: Text(
-                      //     data[Constant.aboutMe],
-                      //     maxLines: 1,
-                      //     overflow: TextOverflow.ellipsis,
-                      //   ),
-                      // );
                     }).toList(),
                   );
                 })),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatchat/enums/enums.dart';
@@ -174,6 +175,7 @@ void showCustomSnackBar(
     required String message,
     required ContentType contentType}) {
   final snackBar = SnackBar(
+    animation: const AlwaysStoppedAnimation(1.0),
     elevation: 0,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
@@ -328,29 +330,29 @@ void showSimpleSnackBar({
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-void showSnackBar(
-  BuildContext context, {
-  required String content,
-  Color backgroundColor = Colors.black,
-  Duration duration = const Duration(seconds: 2),
-  SnackBarBehavior behavior = SnackBarBehavior.floating,
-  EdgeInsetsGeometry margin = const EdgeInsets.all(10),
-  double elevation = 6.0,
-}) {
-  final snackBar = SnackBar(
-    content: Text(content),
-    backgroundColor: backgroundColor.withOpacity(0.3),
-    duration: duration,
-    behavior: behavior,
-    elevation: elevation,
-    margin: behavior == SnackBarBehavior.floating ? margin : null,
-    shape: behavior == SnackBarBehavior.floating
-        ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))
-        : null,
-  );
+// void showSnackBar(
+//   BuildContext context, {
+//   required String content,
+//   Color backgroundColor = Colors.black,
+//   Duration duration = const Duration(seconds: 2),
+//   SnackBarBehavior behavior = SnackBarBehavior.floating,
+//   EdgeInsetsGeometry margin = const EdgeInsets.all(10),
+//   double elevation = 6.0,
+// }) {
+//   final snackBar = SnackBar(
+//     content: Text(content),
+//     backgroundColor: backgroundColor.withOpacity(0.3),
+//     duration: duration,
+//     behavior: behavior,
+//     elevation: elevation,
+//     margin: behavior == SnackBarBehavior.floating ? margin : null,
+//     shape: behavior == SnackBarBehavior.floating
+//         ? RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))
+//         : null,
+//   );
 
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-}
+//   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+// }
 
 void showToast(BuildContext context, String text) {
   final scaffold = ScaffoldMessenger.of(context);

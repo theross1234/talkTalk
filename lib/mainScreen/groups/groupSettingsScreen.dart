@@ -1,4 +1,5 @@
 import 'package:chatchat/enums/enums.dart';
+import 'package:chatchat/models/user_model.dart';
 import 'package:chatchat/providers/group_provider.dart';
 import 'package:chatchat/utils/constant.dart';
 import 'package:chatchat/utils/global_method.dart';
@@ -50,6 +51,9 @@ class _GroupSettingScreenState extends State<GroupSettingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print group admn list
+    List<UserModel> adminGroup = context.read<GroupProvider>().groupAdminList;
+    print("group admin is: ${adminGroup.length}");
     //List<UserModel> adminFriend = context.watch<GroupProvider>().groupAdminList;
     return Scaffold(
       appBar: AppBar(
